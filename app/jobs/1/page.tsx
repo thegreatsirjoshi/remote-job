@@ -31,8 +31,8 @@ const JobDetailsPage = () => {
         logo_url: "https://example.com/logo.png" // Replace with actual logo URL
     };
 
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+    const [loading] = useState(false);
+    const [error] = useState<string | null>(null);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault(); // Prevent default form submission behavior
