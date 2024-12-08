@@ -120,6 +120,11 @@ const JobDetailsPage = () => {
                                 {`(adsbygoogle = window.adsbygoogle || []).push({});`}
                             </Script>
                         </div>
+                        <div>
+                        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3379491505434257"
+     crossOrigin="anonymous"></script>
+                        </div>
+                        
 
                     </>
                 )}

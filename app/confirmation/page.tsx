@@ -12,6 +12,8 @@ const ConfirmationPage = () => {
                     <Link href="/" className="text-blue-600 hover:underline">Return to Home</Link>
                 </div>
             </div>
+            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3379491505434257"
+     crossOrigin="anonymous"></script>
         </div>
     );
 };
