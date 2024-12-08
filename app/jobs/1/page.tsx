@@ -2,10 +2,9 @@
 
 'use client'; // Mark this component as a client component
 
-import React, { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Script from 'next/script'; // Import next/script for loading external scripts
-import DOMPurify from 'dompurify'; // Import DOMPurify for sanitizing HTML
 
 // Define the Job type
 interface Job {
@@ -14,40 +13,26 @@ interface Job {
     company: string;
     location: string;
     description: string; // This will contain HTML formatted text
-    logo_url: string; // Add this line to include the company logo URL
+    logo_url: string; // Company logo URL
 }
 
 // Job Details component
 const JobDetailsPage = () => {
-    const params = useParams<{ id: string }>(); // Get the job ID from URL parameters
-    const jobId = params.id; // Extract job ID
     const router = useRouter(); // Initialize router for navigation
 
-    const [job, setJob] = useState<Job | null>(null);
-    const [loading, setLoading] = useState(true);
+    // Hardcoded job details for a Java Backend Developer position
+    const job: Job = {
+        id: 1,
+        title: "Java Backend Developer",
+        company: "Tech Innovations Inc.",
+        location: "Remote",
+        description: "",
+            
+        logo_url: "https://example.com/logo.png" // Replace with actual logo URL
+    };
+
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-
-    // Fetch job details based on ID
-    useEffect(() => {
-        const fetchJobDetails = async () => {
-            if (!jobId) return; // Ensure jobId is available before fetching
-
-            try {
-                const res = await fetch(`http://localhost:5000/api/jobs/${jobId}`); // Use your Node.js API URL
-                if (!res.ok) {
-                    throw new Error('Failed to fetch job details');
-                }
-                const data: Job = await res.json();
-                setJob(data);
-            } catch (err) {
-                setError(err instanceof Error ? err.message : 'Unknown error');
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchJobDetails();
-    }, [jobId]); // Dependency on jobId
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault(); // Prevent default form submission behavior
@@ -61,26 +46,48 @@ const JobDetailsPage = () => {
                     <p className="text-center text-gray-700">Loading job details...</p>
                 ) : error ? (
                     <p className="text-red-500 text-center">{error}</p>
-                ) : job ? (
+                ) : (
                     <>
                         <h2 className="text-3xl md:text-4xl font-bold mb-4 text-center text-black flex items-center justify-center">
-                            {job.logo_url && (
-                                <img 
-                                    src={job.logo_url} 
-                                    alt={`${job.company} Logo`} 
-                                    className="h-10 w-auto mr-2"  // Adjust size as needed
-                                />
-                            )}
                             {job.title}
                         </h2>
                         <p className="text-lg md:text-xl text-black mb-2 text-center">{job.company}</p>
                         <p className="text-sm text-black mb-4 text-center">{job.location}</p>
 
-                        {/* Render sanitized HTML Description with black text */}
-                        <div 
-                            className="mb-6 text-black" 
-                            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(job.description) }} 
-                        />
+                        <div className="text-black mb-2">
+                        <h3><strong>Job Overview</strong></h3>
+            <p>We are seeking a skilled <strong>Java Backend Developer</strong> to join our dynamic team at <strong>Tech Innovations Inc.</strong>. The ideal candidate will have experience in building scalable and high-performance applications.</p>
+            
+            <h3><strong>Key Responsibilities</strong></h3>
+            <ul>
+                <li><strong>Develop</strong> and maintain backend services using Java.</li>
+                <li><strong>Collaborate</strong> with front-end developers to integrate user-facing elements.</li>
+                <li><strong>Optimize</strong> applications for maximum speed and scalability.</li>
+                <li><strong>Participate</strong> in code reviews and maintain code quality standards.</li>
+            </ul>
+
+            <h3><strong>Qualifications</strong></h3>
+            <ul>
+                <li><strong>Proven experience</strong> as a Java Backend Developer or similar role.</li>
+                <li><strong>Strong understanding</strong> of Java frameworks (Spring, Hibernate).</li>
+                <li><strong>Experience</strong> with RESTful APIs and microservices architecture.</li>
+                <li><strong>Familiarity</strong> with database technologies (SQL, NoSQL).</li>
+                <li><strong>Excellent problem-solving skills</strong> and ability to work independently.</li>
+            </ul>
+
+            <h3><strong>Benefits</strong></h3>
+            <ul>
+                <li><strong>Competitive salary</strong> and performance bonuses.</li>
+                <li><strong>Flexible working hours</strong> and remote work options.</li>
+                <li><strong>Health insurance</strong> and wellness programs.</li>
+                <li><strong>Opportunities for professional development</strong> and growth.</li>
+            </ul>
+
+            <h3><strong>How to Apply</strong></h3>
+            <p>If you are passionate about backend development and meet the qualifications listed above, we encourage you to apply!</p>
+        `,
+                        </div>
+                        
 
                         <h3 className="text-xl font-bold mb-4 text-black">Apply for this Job</h3>
                         <form onSubmit={handleSubmit} className="mb-6">
@@ -92,10 +99,10 @@ const JobDetailsPage = () => {
                                 <label htmlFor="email" className="block text-sm font-medium text-black">Email</label>
                                 <input type="email" id="email" required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-3 focus:outline-none focus:ring focus:ring-pink-400 transition duration-200 text-black"/>
                             </div>
-                            {/* New University Field */}
+                            {/* New City Field */}
                             <div className="mb-4">
-                                <label htmlFor="university" className="block text-sm font-medium text-black">City</label>
-                                <input type="text" id="university" required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-3 focus:outline-none focus:ring focus:ring-pink-400 transition duration-200 text-black"/>
+                                <label htmlFor="city" className="block text-sm font-medium text-black">City</label>
+                                <input type="text" id="city" required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-3 focus:outline-none focus:ring focus:ring-pink-400 transition duration-200 text-black"/>
                             </div>
                             <button type="submit" className="w-full bg-blue-700 text-white py-3 rounded-md hover:bg-blue-800 transition duration-200 shadow-md hover:shadow-lg">Submit Application</button>
                         </form>
@@ -115,8 +122,6 @@ const JobDetailsPage = () => {
                         </div>
 
                     </>
-                ) : (
-                    <p>Job not found.</p>
                 )}
             </div>
         </div>
